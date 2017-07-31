@@ -3,6 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 import Login from './views/login';
 import ImageUpload from './views/ImageUpload';
+import SignUp from './views/signup'
 
 
 
@@ -12,7 +13,8 @@ import ImageUpload from './views/ImageUpload';
 
 const Navigator = StackNavigator({
   Home: {screen: Login},
-  ImageUpload: {screen: ImageUpload}
+  ImageUpload: {screen: ImageUpload},
+  SignUp: {screen: SignUp}
 });
 
 

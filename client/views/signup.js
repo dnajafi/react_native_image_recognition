@@ -5,7 +5,7 @@ import dismissKeyboard from 'react-native/Libraries/Utilities/dismissKeyboard';
 
 // class Br extends React.Component({ render() { return ( <Text> {"\n"}{"\n"} </Text> ) } })
 
-export default class Login extends React.Component {
+export default class SignUp extends React.Component {
 
   constructor(props) {
     super(props);
@@ -16,49 +16,47 @@ export default class Login extends React.Component {
     };
   }
 
-  onPressLogin() {
+  onPressSignup() {
+
     dismissKeyboard();
 
-    // create a string for an HTTP body message
-    const email = encodeURIComponent(this.state.user.email);
-    const password = encodeURIComponent(this.state.user.password);
-    const formData = `email=${email}&password=${password}`;
+    console.log('111111');
 
-    // create an AJAX request
-    const xhr = new XMLHttpRequest();
-    xhr.open('post', 'http://localhost:8080/auth/login');
-    xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-    xhr.responseType = 'json';
-    xhr.addEventListener('load', () => {
-      if (xhr.status === 200) {
-        // success
+    console.log(this.state.email);
 
-        console.log('************* SUCCESS *************');
+    return fetch('http://localhost:8080/auth/signup', { 
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        email: this.state.email,
+        password: this.state.password,
+      })
 
-        // change the component-container state
-        // this.setState({
-        //   errors: {}
-        // });
-        this.props.navigation.navigate('ImageUpload');
-        // console.log('The form is valid');
-      } else {
-        // failure
-        console.log('************* FAILURE *************');
-        console.log(xhr.response.errors);
-        console.log(xhr.response.message);
-
-        // change the component state
-        // const errors = xhr.response.errors ? xhr.response.errors : {};
-        // errors.summary = xhr.response.message;
-
-        // this.setState({
-        //   errors
-        // });
-      }
+    })
+    .then((response) => response.json())
+    .then((responseJson) => {
+      console.log('222222');
+      console.log(responseJson);
+    })
+    .catch((error) => {
+      console.log('333333');
+      console.error(error);
     });
-    
-    xhr.send(formData);
 
+    // return fetch('https://facebook.github.io/react-native/movies.json')
+    //   .then((response) => response.json())
+    //   .then((responseJson) => {
+    //     console.log('22222');
+    //     console.log(responseJson.movies);
+    //     return responseJson.movies;
+    //   })
+    //   .catch((error) => {
+    //     console.log('33333');
+    //     console.error(error);
+    //   });
 
 
   }
@@ -68,7 +66,7 @@ export default class Login extends React.Component {
       <Container>
         <View style={styles.header}>
           <Header>
-            <Title>Login</Title>
+            <Title>Registration</Title>
           </Header>
         </View>
 
@@ -96,17 +94,9 @@ export default class Login extends React.Component {
                 secureTextEntry
               />
           </InputGroup>
-
-            <Button
-                  style={styles.button}
-                  onPress={() => this.onPressLogin()}
-            >
-              <Text style={styles.loginText}>Login</Text>
-            </Button>
-
              <Button
                   style={styles.button}
-                  onPress={() => (this.props.navigation.navigate('SignUp'))}
+                  onPress={() => this.onPressSignup()}
             >
               <Text style={styles.loginText}>Signup</Text>
             </Button>
@@ -168,14 +158,4 @@ const styles = StyleSheet.create({
 });
 
 
-
-
-
-
-
-
-
-
-
-
-
+//localhost:8080/auth/signup

@@ -25,6 +25,8 @@ module.exports = (passport) => {
 		passReqToCallback: true
 	},
 	(req, email, password, done) => {
+
+
 		// nodeJS process.nextTick causes this section to execute asynchronously after everything else is done and data has come back
 		process.nextTick(() => {
 			User.findOne({ 'local.email': email }, (err, user) => {
