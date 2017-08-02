@@ -19,45 +19,27 @@ export default class Login extends React.Component {
   onPressLogin() {
     dismissKeyboard();
 
-    // create a string for an HTTP body message
-    const email = encodeURIComponent(this.state.user.email);
-    const password = encodeURIComponent(this.state.user.password);
-    const formData = `email=${email}&password=${password}`;
+    return fetch('http://localhost:8080/auth/login', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        email: this.state.email,
+        password: this.state.password,
+      })
 
-    // create an AJAX request
-    const xhr = new XMLHttpRequest();
-    xhr.open('post', 'http://localhost:8080/auth/login');
-    xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-    xhr.responseType = 'json';
-    xhr.addEventListener('load', () => {
-      if (xhr.status === 200) {
-        // success
+    })
+    .then((response) => response.json())
+    .then((responseJson) => {
+      console.log(responseJson);
+      
 
-        console.log('************* SUCCESS *************');
-
-        // change the component-container state
-        // this.setState({
-        //   errors: {}
-        // });
-        this.props.navigation.navigate('ImageUpload');
-        // console.log('The form is valid');
-      } else {
-        // failure
-        console.log('************* FAILURE *************');
-        console.log(xhr.response.errors);
-        console.log(xhr.response.message);
-
-        // change the component state
-        // const errors = xhr.response.errors ? xhr.response.errors : {};
-        // errors.summary = xhr.response.message;
-
-        // this.setState({
-        //   errors
-        // });
-      }
+    })
+    .catch((error) => {
+      console.error(error);
     });
-    
-    xhr.send(formData);
 
 
 
@@ -108,7 +90,7 @@ export default class Login extends React.Component {
                   style={styles.button}
                   onPress={() => (this.props.navigation.navigate('SignUp'))}
             >
-              <Text style={styles.loginText}>Signup</Text>
+              <Text style={styles.loginText}>Not signed up?{'\n'}Click here</Text>
             </Button>
 
 

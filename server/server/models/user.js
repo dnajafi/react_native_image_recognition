@@ -35,7 +35,7 @@ const tokenSchema = mongoose.Schema({
 	},
 	expireAt: {
 		type: Date,
-		expires: 60, // 60 seconds,
+		expires: 60*10, // 10 minutes,
 		default: Date.now
 	}
 });

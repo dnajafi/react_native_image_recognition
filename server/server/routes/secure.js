@@ -12,17 +12,24 @@ module.exports = (router, passport) => {
 		res.redirect('/auth'); // takes them to index page for our auth router
 	});
 
-	router.get('/profile', (req, res) => {
-		User.findOne({ _id: req.user._id }).populate('token').exec(function(err, user){
-			res.render('profile.ejs', { user: user });
-		});
-	});
+	// router.get('/profile', (req, res) => {
+	// 	User.findOne({ _id: req.user._id }).populate('token').exec(function(err, user){
+	// 		res.render('profile.ejs', { user: user });
+	// 	});
+	// });
 
 	router.get('/getToken', (req, res) => {
 		User.findOne({ _id: req.user._id }).populate('token').exec((err, user) => {
-			if(user.token === null)
-				user.generateToken();
-			res.redirect('/profile');
+			
+			// if(user.token === null)
+			// 	user.generateToken();
+
+			return res.status(200).json({
+	      success: true,
+	      message: 'You have successfully logged in!',
+	      token: user.token.value
+	    });
+			// res.redirect('/profile');
 			// res.redirect('/testToken');
 
 		});

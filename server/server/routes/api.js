@@ -4,7 +4,6 @@ module.exports = (router, passport) => {
 	// don't need sessions since we are using token authentication
 	// router.use(passport.authenticate('bearer', { session: false })); --> placed inside the actual route now
 
-
 	router.get('/testAPI', (req, res, next) => {
 		if(req.query.access_token)
 			next(); // move to passport authentication middleware

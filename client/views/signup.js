@@ -2,6 +2,10 @@ import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 import { Button, Container, Header, Title, InputGroup, Icon, Input } from 'native-base';
 import dismissKeyboard from 'react-native/Libraries/Utilities/dismissKeyboard';
+import fetchival from 'fetchival';
+import request from 'superagent';
+
+
 
 // class Br extends React.Component({ render() { return ( <Text> {"\n"}{"\n"} </Text> ) } })
 
@@ -17,14 +21,9 @@ export default class SignUp extends React.Component {
   }
 
   onPressSignup() {
-
     dismissKeyboard();
 
-    console.log('111111');
-
-    console.log(this.state.email);
-
-    return fetch('http://localhost:8080/auth/signup', { 
+    return fetch('http://localhost:8080/auth/signup', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -38,27 +37,15 @@ export default class SignUp extends React.Component {
     })
     .then((response) => response.json())
     .then((responseJson) => {
-      console.log('222222');
-      console.log(responseJson);
+      // console.log(responseJson);
+      if(responseJson["success"]) {
+        this.props.navigation.navigate('Home');
+      }
+
     })
     .catch((error) => {
-      console.log('333333');
       console.error(error);
     });
-
-    // return fetch('https://facebook.github.io/react-native/movies.json')
-    //   .then((response) => response.json())
-    //   .then((responseJson) => {
-    //     console.log('22222');
-    //     console.log(responseJson.movies);
-    //     return responseJson.movies;
-    //   })
-    //   .catch((error) => {
-    //     console.log('33333');
-    //     console.error(error);
-    //   });
-
-
   }
 
   render() {
@@ -100,16 +87,9 @@ export default class SignUp extends React.Component {
             >
               <Text style={styles.loginText}>Signup</Text>
             </Button>
-
-
           </View>
 
-          
-
-
         </TouchableWithoutFeedback>
-        
-
       </Container>
     );
 

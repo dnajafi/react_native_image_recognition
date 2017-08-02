@@ -26,7 +26,6 @@ module.exports = (passport) => {
 	},
 	(req, email, password, done) => {
 
-
 		// nodeJS process.nextTick causes this section to execute asynchronously after everything else is done and data has come back
 		process.nextTick(() => {
 			User.findOne({ 'local.email': email }, (err, user) => {
@@ -34,7 +33,8 @@ module.exports = (passport) => {
 					return done(err);
 				if(user){
 					// null for no error; false so that passport doesn't create a new user; 
-					return done(null, false, req.flash('signUpMessage', 'That email is already taken.'));
+					// return done(null, false, req.flash('signUpMessage', 'That email is already taken.'));
+					return done(null, false);
 				} 
 				if(!req.user) {
 					// if no user exists and user is not logged in than this is a brand new authentication and so we want to add them to our db
@@ -81,13 +81,17 @@ module.exports = (passport) => {
 				
 				// not an error but is a failed user lookup/attempt at logging in
 				if(!user)
-					return done(null, false, req.flash('loginMessage', 'No user found with that email.'));
+					return done(null, false);
+					// return done(null, false, req.flash('loginMessage', 'No user found with that email.'));
 
 				user.validPassword(password, user).then((response) => {
-					if(response)
+					if(response) {
+						user.generateToken();
 						return done(null, user);
+					}
 					else
-						return done(null, false, req.flash('loginMessage', 'Invalid email or password.'));
+						return done(null, false);
+						// return done(null, false, req.flash('loginMessage', 'Invalid email or password.'));
 				});
 			});
 		});

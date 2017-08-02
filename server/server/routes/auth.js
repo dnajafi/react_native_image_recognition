@@ -7,17 +7,19 @@ module.exports = (router, passport) => {
 	});
 
 	//localhost:8080/auth/login
-	router.get('/login', (req, res) => {
-		res.render('login.ejs', { message: req.flash('loginMessage') });
-	});
+	// router.get('/login', (req, res) => {
+	// 	res.render('login.ejs', { message: req.flash('loginMessage') });
+	// });
 
 	router.post('/login', passport.authenticate('local-login', {
-		successRedirect: '/profile',
-		failureRedirect: '/login',
-		failureFlash: true
+		successRedirect: '/getToken',
+		failureRedirect: '/login'
 	}));
+	
 
-
+	router.get('/signup', (req, res) => {
+		res.render('signup.ejs', { message: req.flash('signUpMessage') });
+	});
 
 	function validateSignupForm(payload) {
 	  const errors = {};
@@ -86,6 +88,7 @@ module.exports = (router, passport) => {
 	      success: true,
 	      message: 'You have successfully signed up! Now you should be able to log in.'
 	    });
+
 	  })(req, res, next);
 });
 
