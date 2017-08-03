@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, TouchableWithoutFeedback, AsyncStorage } from 'react-native';
 import { Button, Container, Header, Title, InputGroup, Icon, Input } from 'native-base';
 import dismissKeyboard from 'react-native/Libraries/Utilities/dismissKeyboard';
 
@@ -12,7 +12,8 @@ export default class Login extends React.Component {
 
     this.state = {
       email: '',
-      password: ''
+      password: '',
+      errors: ''
     };
   }
 
@@ -33,8 +34,18 @@ export default class Login extends React.Component {
     })
     .then((response) => response.json())
     .then((responseJson) => {
-      console.log(responseJson);
-      
+
+      if(responseJson["success"]) {
+
+        try {
+          AsyncStorage.setItem('currToken', responseJson["token"], () => {
+            this.props.navigation.navigate('ImageUpload')
+          });
+        } catch (error) {
+          console.log('****************** ERROR **********************');
+          console.log(error);
+        }
+      }      
 
     })
     .catch((error) => {

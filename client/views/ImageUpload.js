@@ -1,16 +1,36 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, AsyncStorage } from 'react-native';
 
 export default class ImageUpload extends React.Component {
+
+
+    constructor(props) {
+      super(props);
+
+      this.state = {
+        token: ''
+      };
+    }
 
   static navigationOptions = (props) => ({
     title: 'Image Upload Page'
   });
 
+  componentDidMount() {
+
+    AsyncStorage.getItem('currToken')
+    .then((value) => {
+      this.setState({ 'token': value });
+    })
+
+  }
+
+
   render() {
     return (
       <View style={styles.container}>
         <Text>Image Upload Screen</Text>
+        <Text>Current token: {this.state.token}</Text>
       </View>
     );
   }
