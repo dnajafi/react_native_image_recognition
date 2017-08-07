@@ -2,3 +2,4 @@ server/node_modules
 server/server/config/database.js
 server/server/config/auth.js
 client/node_modules
+server/server/config/s3credentials.js
